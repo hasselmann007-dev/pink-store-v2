@@ -1,0 +1,7 @@
+/* Importa o Tailwind CSS. Para Tailwind v4 não há necessidade das diretivas
+ * antigas (@tailwind base; @tailwind components; @tailwind utilities),
+ * basta importar o pacote principal. */
+@import "tailwindcss";
+
+/* Você pode adicionar estilos globais aqui ou utilizar classes utilitárias
+ * diretamente nos seus componentes JSX. */
