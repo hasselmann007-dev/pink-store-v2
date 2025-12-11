@@ -1496,7 +1496,12 @@ const pixAmount = pixInfo?.amount
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
           <div>
-            <h4 className="font-black text-xl mb-6 text-[#E91E63]">PINK STORE</h4>
+            <img 
+              src="/logo/logo.jpeg" 
+              alt="Logo Pink Store"
+              className="h-12 w-auto cursor-pointer"
+              onClick={() => { setCurrentRoute('home'); setSearchTerm(''); }}
+            />
             <p className="text-gray-400 text-sm leading-relaxed">
               A marca revolucionária de beleza. Produtos de alta performance com preços acessíveis para você brilhar.
             </p>
