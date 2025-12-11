@@ -940,8 +940,50 @@ setPixInfo({
 
     const [paymentMethod] = useState('PIX');
 
-    const handleChange = (e) =>
+        const handleChange = (e) =>
       setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+    // 🔹 FUNÇÃO SIMPLES DE VALIDAÇÃO
+    const isCheckoutValid = () => {
+      // Campos obrigatórios e seus "nomes bonitos"
+      const required = {
+        email: 'E-mail',
+        name: 'Nome completo',
+        cep: 'CEP',
+        address: 'Endereço',
+        number: 'Número',
+        city: 'Cidade',
+      };
+
+      // Verifica quais estão vazios
+      const missing = Object.entries(required).filter(
+        ([key]) => !formData[key] || !formData[key].trim()
+      );
+
+      if (missing.length > 0) {
+        const msg =
+          'Preencha os campos obrigatórios:\n\n- ' +
+          missing.map(([, label]) => label).join('\n- ');
+        alert(msg);
+        return false;
+      }
+
+      // Validação simples de e-mail
+      const emailOk = /\S+@\S+\.\S+/.test(formData.email);
+      if (!emailOk) {
+        alert('Informe um e-mail válido.');
+        return false;
+      }
+
+      // Validação simples de CEP (8 dígitos)
+      const cleanCep = formData.cep.replace(/\D/g, '');
+      if (cleanCep.length !== 8) {
+        alert('Digite um CEP válido com 8 dígitos.');
+        return false;
+      }
+
+      return true; // tudo ok, pode seguir
+    };
 
 // Cálculo total
 const subtotal = cart.reduce(
@@ -1322,17 +1364,19 @@ const pixAmount = pixInfo?.amount
   className="w-full mt-4"
   disabled={cart.length === 0 || paymentStatus === 'processing'}
   loading={paymentStatus === 'processing'}
-  onClick={() => {
-    if (cart.length === 0) return;
+   onClick={() => {
+    if (cart.length === 0 || paymentStatus === 'processing') return;
 
-    // só pra você ver no console que clicou
+    // 🔹 VALIDAÇÃO SIMPLES ANTES DE ENVIAR
+    const ok = isCheckoutValid();
+    if (!ok) return; // se tiver erro, não chama o backend
+
     console.log('🟢 FINALIZAR COMPRA clicado', {
       formData,
       bumpAdded,
       paymentMethod,
     });
 
-    // 👉 AGORA SIM: chama a função que fala com o backend e gera o PIX
     handlePaymentProcess(formData, bumpAdded, paymentMethod);
   }}
 >
